@@ -1,0 +1,48 @@
+[project]
+name = "osi-python"
+description = "ASAM Open Simulation Interface Python Bindings."
+authors = [
+    {name = "ASAM Open Simulation Interface Project", email = "osi@asam.net"},
+]
+maintainers = [
+    {name = "ASAM Open Simulation Interface Project", email = "osi@asam.net"},
+]
+license = {text = "MPL-2.0"}
+readme = "README.md"
+dynamic = ["version"]
+requires-python = ">=3.10"
+dependencies = [
+    "protobuf>=6.30.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/OpenSimulationInterface/osi-python"
+Repository = "https://github.com/OpenSimulationInterface/osi-python.git"
+"Bug Tracker" = "https://github.com/OpenSimulationInterface/osi-python/issues"
+
+[project.scripts]
+osi2read = "osi3trace.osi2read:main"
+
+[tool.poetry]
+packages = [
+    { include = "osi3" },
+    { include = "osi3trace" },
+]
+exclude = [ "osi3/*.proto" ]
+version = "0.0.0"
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.poetry-dynamic-versioning]
+enable = true
+bump = true
+
+[build-system]
+requires = [
+    "poetry-core>=2.0.0,<3.0.0",
+    "poetry-dynamic-versioning>=1.0.0,<2.0.0",
+    "protoc-wheel-0==30.2",
+]
+build-backend = "protoc_backend"
+backend-path = ["build-backend"]
