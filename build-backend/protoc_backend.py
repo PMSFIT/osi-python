@@ -64,8 +64,11 @@ def _generate_python_files(package_name):
                     )
 
     # Run protoc
+    proto_files = glob.glob(package_name + "/*.proto")
+    if not proto_files:
+        raise RuntimeError("No .proto files found in the package directory. Aborting build.")
     subprocess.check_call(
-        [PROTOC_EXE, "--python_out=.", "--pyi_out=.", package_name + "/*.proto"]
+        [PROTOC_EXE, "--python_out=.", "--pyi_out=."] + proto_files,
     )
 
     # Write __init__.py
