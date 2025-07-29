@@ -6,7 +6,7 @@ import glob
 import pathlib
 from typing import Any
 
-from poetry.core.masonry.api import get_requires_for_build_wheel, get_requires_for_build_sdist, prepare_metadata_for_build_wheel, build_wheel as build_wheel_orig, build_sdist as build_sdist_orig, build_editable, get_requires_for_build_editable, prepare_metadata_for_build_editable
+from poetry.core.masonry.api import get_requires_for_build_wheel, get_requires_for_build_sdist, prepare_metadata_for_build_wheel, build_wheel as build_wheel_orig, build_sdist as build_sdist_orig, build_editable as build_editable_orig, get_requires_for_build_editable, prepare_metadata_for_build_editable
 
 import poetry_dynamic_versioning.patch as patch
 
@@ -95,3 +95,12 @@ def build_sdist(
     _generate_python_files("osi3")
     return build_sdist_orig(sdist_directory, config_settings)
 
+def build_editable(
+    wheel_directory: str,
+    config_settings: dict[str, Any] | None = None,
+    metadata_directory: str | None = None,
+) -> str:
+    _generate_python_files("osi3")
+    return build_editable_orig(
+        wheel_directory, config_settings, metadata_directory
+    )
