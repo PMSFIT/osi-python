@@ -28,7 +28,7 @@ Installation
 - Clone the osi-python repository, including sub-modules:
 
   ```console
-  git clone --recurse-submodules https://github.com/PMSFIT/osi-python.git
+  git clone --recurse-submodules https://github.com/OpenSimulationInterface/osi-python.git
   ```
 
 - Switch to the repository directory:
