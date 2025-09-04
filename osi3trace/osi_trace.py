@@ -312,6 +312,7 @@ class OSITraceMulti(ReaderBase):
         self.path = Path(path)
         self._file = open(self.path, "rb")
         self.mcap_reader = make_reader(self._file, decoder_factories=[DecoderFactory()])
+        self._iter = None
         self._summary = self.mcap_reader.get_summary()
         available_topics = self.get_available_topics()
         if topic == None:
@@ -323,18 +324,22 @@ class OSITraceMulti(ReaderBase):
     def restart(self, index=None):
         if index != None:
             raise NotImplementedError("Restarting from a given index is not supported for multi-channel traces.")
-        if hasattr(self, "_iter"):
-            del self._iter
+        self._iter = None
 
     def __iter__(self):
         """Stateful iterator over the channel's messages in log time order."""
-        if not hasattr(self, "_iter"):
+        if self._iter is None:
             self._iter = self.mcap_reader.iter_decoded_messages(topics=[self.topic])
         for message in self._iter:
             yield message.decoded_message
     
     def close(self):
-        self._file.close()
+        if self._file:
+            self._file.close()
+        self._file = None
+        self.mcap_reader = None
+        self._summary = None
+        self._iter = None
 
     def get_available_topics(self):
         return [channel.topic for id, channel in self._summary.channels.items()]
